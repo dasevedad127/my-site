@@ -1,7 +1,61 @@
 <!DOCTYPE html>
-<html>
-<head><title>Dashboard</title></head>
-<body style="margin:0;">
-  <iframe src="https://Ultraviolet-App" style="width:100vw; height:100vh; border:none;"></iframe>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard</title>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    #frame { display: block; width: 100%; height: 100%; border: 0; }
+    #fallback { display: none; padding: 20px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+  </style>
+</head>
+<body>
+  <!--
+    NOTE: Replace the value of the iframe `src` with the full URL of the site you want to embed,
+    including protocol and domain (for example: https://example.com). Do NOT use an IP address
+    or incomplete hostnames. I cannot help you bypass school network restrictions.
+  -->
+
+  <div id="iframe-container" style="height:100vh">
+    <iframe id="frame" src="https://Ultraviolet-App" title="Dashboard iframe" style="width:100%; height:100%; border:0;" loading="lazy"></iframe>
+  </div>
+
+  <div id="fallback">
+    <h2>Site could not be loaded in an iframe</h2>
+    <p>This page attempted to load the site inside an iframe but it failed or timed out. Common reasons:</p>
+    <ul>
+      <li>The target site sets headers that prevent embedding (X-Frame-Options or Content-Security-Policy).</li>
+      <li>Your network blocks access to the site.</li>
+      <li>The URL is incorrect or missing a top-level domain (for example: example.com).</li>
+    </ul>
+    <p>If you control the target site, allow embedding by removing X-Frame-Options or updating the site's Content-Security-Policy. If you don't control it, open it in a new tab instead:</p>
+    <p><a id="direct-link" href="#" target="_blank" rel="noopener">Open site in a new tab</a></p>
+    <p><strong>Important:</strong> I can't help bypass school or network blocks. If the site is blocked by your school, ask your network administrator for permission.</p>
+  </div>
+
+  <script>
+    (function(){
+      var iframe = document.getElementById('frame');
+      var fallback = document.getElementById('fallback');
+      var direct = document.getElementById('direct-link');
+      var target = iframe.getAttribute('src') || '';
+      direct.href = target || '#';
+
+      // If the iframe doesn't fire a load event within 5 seconds, show the fallback message.
+      var loaded = false;
+      iframe.addEventListener('load', function(){ loaded = true; });
+      setTimeout(function(){
+        if (!loaded) {
+          try {
+            iframe.style.display = 'none';
+            fallback.style.display = 'block';
+          } catch (e) {
+            fallback.style.display = 'block';
+          }
+        }
+      }, 5000);
+    })();
+  </script>
 </body>
 </html>
